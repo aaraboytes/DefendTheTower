@@ -37,11 +37,14 @@ public class FPS : MonoBehaviour {
                 if (Physics.Raycast(transform.position, transform.forward, out hit, distance))
                 {
                     Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.blue);
-                    if (hit.collider.gameObject.GetComponent<Enemy>())
+                    if (hit.collider.CompareTag("Enemy"))
                     {
                         Enemy currentEnemy = hit.collider.gameObject.GetComponent<Enemy>();
                         currentEnemy.MakeDamage(damage);
                         Instantiate(bloodEffect, hit.point, Quaternion.LookRotation(transform.position));
+                    }else if (hit.collider.CompareTag("Human")) {
+                        GameManager._instance.ShopPanel.SetActive(true);
+                        Cursor.lockState = CursorLockMode.None;
                     }
                     else
                         Instantiate(shootEffect, hit.point, Quaternion.LookRotation(transform.position));
