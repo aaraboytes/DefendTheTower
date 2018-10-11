@@ -5,6 +5,7 @@ public class Enemy : MonoBehaviour {
     public int life;
     public float speed;
     public int damage;
+    public int score;
     public Transform target;
     public int indexTarget;
     int currentLife;
@@ -18,7 +19,8 @@ public class Enemy : MonoBehaviour {
 	void Update () {
         //FollowTarget
         Vector3 dir = target.position - transform.position;
-        transform.LookAt(target);
+        Quaternion lookRot = Quaternion.LookRotation(target.position);
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.rotation.x, lookRot.y, transform.rotation.z), 2);
         rb.velocity = dir * speed * Time.deltaTime;
 	}
 
@@ -33,7 +35,7 @@ public class Enemy : MonoBehaviour {
             }
             else
             {
-                target = GameManager._instance.GetHumanTarget();
+                target = GameManager._instance.humanTargets[0];
             }
         }
     }
@@ -54,7 +56,7 @@ public class Enemy : MonoBehaviour {
     }
     public void Die()
     {
-        GameManager._instance.enemiesOnScene--;
+        GameManager._instance.EnemyKilled(score);
         Destroy(gameObject);
     }
 }

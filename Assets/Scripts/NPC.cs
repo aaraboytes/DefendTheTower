@@ -12,14 +12,15 @@ public class NPC : MonoBehaviour {
     private void Start()
     {
         currentLife = life;
-        target = GameManager._instance.GetHumanTarget();
+        target = GameManager._instance.GetHumanTarget(target);
         rb = GetComponent<Rigidbody>();
     }
     private void Update()
     {
         //FollowTarget
         Vector3 dir = target.position - transform.position;
-        transform.LookAt(target);
+        Quaternion lookRot = Quaternion.LookRotation(target.position);
+        transform.rotation = Quaternion.EulerAngles(transform.rotation.x, lookRot.y, transform.rotation.z);
         rb.velocity = dir * speed * Time.deltaTime;
     }
     public bool MakeDamage(int damage)
@@ -37,7 +38,11 @@ public class NPC : MonoBehaviour {
     }
     public void Die()
     {
-        GameManager._instance.aliveHumans--;
+        GameManager._instance.HumanKilled();
         Destroy(gameObject);
+    }
+    public void Heal()
+    {
+        currentLife = life;
     }
 }

@@ -9,6 +9,7 @@ public class TargetPoint : MonoBehaviour {
         {
             Enemy enemy = other.GetComponent<Enemy>();
             enemy.FindPath(enemy.indexTarget + 1);
+            enemy.indexTarget++;
         }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FPS : MonoBehaviour {
     public float distance;
-    public GameObject shootEffect,bloodEffect;
+    public Pool bloodPool, shootPool;
     [Header("Gameplay Properties")]
     public int damage;
     public float cadence;
@@ -13,17 +14,20 @@ public class FPS : MonoBehaviour {
     public float horSpeed;
     public float vertSpeed;
     public float moveSpeed;
+    public Text ammoText;
 
     float timer;
     int currentAmmo;
     bool reloading = false;
     float h = 0, v = 0;
 
+
     private void Start()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        currentAmmo = ammo;   
+        currentAmmo = ammo;
+        ammoText.text = currentAmmo.ToString() + "/" + ammo.ToString();
     }
     private void Update()
     {
@@ -39,24 +43,34 @@ public class FPS : MonoBehaviour {
                     Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.blue);
                     if (hit.collider.CompareTag("Enemy"))
                     {
+                        //Make Damage to enemy
                         Enemy currentEnemy = hit.collider.gameObject.GetComponent<Enemy>();
                         currentEnemy.MakeDamage(damage);
-                        Instantiate(bloodEffect, hit.point, Quaternion.LookRotation(transform.position));
-                    }else if (hit.collider.CompareTag("Human")) {
-                        GameManager._instance.ShopPanel.SetActive(true);
+                        bloodPool.Recycle(hit.point, Quaternion.LookRotation(transform.position));
+                        GameManager._instance.IncreseCombo();   //Increase combo
+                    }
+                    else if (hit.collider.CompareTag("Human"))
+                    {
+                        //Enter to shop
+                        GameManager._instance.shopPanel.SetActive(true);
                         Cursor.lockState = CursorLockMode.None;
                     }
                     else
-                        Instantiate(shootEffect, hit.point, Quaternion.LookRotation(transform.position));
+                    {
+                        shootPool.Recycle(hit.point, Quaternion.LookRotation(transform.position));
+                        GameManager._instance.DecreaseCombo();  //Decrease combo
+                    }
+                        
                 }
                 timer = 0;
                 currentAmmo--;
-
+                ammoText.text = currentAmmo.ToString() + "/" + ammo.ToString();
                 //Reload
                 if (currentAmmo == 0)
                 {
                     currentAmmo = ammo; //Relleno
                     reloading = true;
+                    ammoText.text = "Reloading";
                 }
             }
         }
