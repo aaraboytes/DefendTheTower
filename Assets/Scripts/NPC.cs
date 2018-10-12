@@ -32,7 +32,7 @@ public class NPC : MonoBehaviour {
         }
         else
         {
-            Die();
+            Invoke("Die", 0.2f);
             return false;
         }
     }

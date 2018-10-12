@@ -15,13 +15,14 @@ public class Enemy : MonoBehaviour {
         currentLife = life;
         rb = GetComponent<Rigidbody>();
     }
-	
-	void Update () {
+
+    void Update() {
         //FollowTarget
         Vector3 dir = target.position - transform.position;
-        Quaternion lookRot = Quaternion.LookRotation(target.position);
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.rotation.x, lookRot.y, transform.rotation.z), 2);
-        rb.velocity = dir * speed * Time.deltaTime;
+        Quaternion lookRot = Quaternion.LookRotation(dir);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 10.0f);
+        Vector3 move = transform.forward * speed;
+        rb.velocity = move;
 	}
 
     private void OnCollisionEnter(Collision collision)
@@ -49,10 +50,7 @@ public class Enemy : MonoBehaviour {
     }
     public void FindPath(int point)
     {
-        if (GameManager._instance.targets[point] != null)
-        {
-            target = GameManager._instance.targets[point];
-        }
+        target = GameManager._instance.targets[point];
     }
     public void Die()
     {

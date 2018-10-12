@@ -22,6 +22,7 @@ public class Spawner : MonoBehaviour {
             GameObject currentEnemy = (GameObject)Instantiate(enemy, transform.position, Quaternion.identity);
             Enemy enemyAI = currentEnemy.GetComponent<Enemy>();
             enemyAI.FindPath(closestIndexPoint);
+            enemyAI.indexTarget = closestIndexPoint;
             //Notice to gamemanager
             GameManager._instance.enemiesOnScene++;
             //Restart timer

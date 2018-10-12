@@ -8,8 +8,15 @@ public class TargetPoint : MonoBehaviour {
         if (other.CompareTag("Enemy"))
         {
             Enemy enemy = other.GetComponent<Enemy>();
-            enemy.FindPath(enemy.indexTarget + 1);
-            enemy.indexTarget++;
+            if(transform != GameManager._instance.targets[GameManager._instance.targets.Length - 1])
+            {
+                enemy.FindPath(enemy.indexTarget + 1);
+                enemy.indexTarget++;
+            }
+            else
+            {
+                enemy.target = GameManager._instance.humanTargets[0];
+            }
         }
     }
 }

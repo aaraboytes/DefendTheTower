@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour {
             //Decrease
             comboSlider.value--;
             //Decrease Combo Status
-            if (comboSlider.value <= 0)
+            if (comboSlider.value <= 0 && multiplier>1)
             {
                 multiplier--;
                 multiplierText.text = "x" + multiplier.ToString();

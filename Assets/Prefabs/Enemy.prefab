@@ -186,7 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   life: 10
-  speed: 10
+  speed: 100
   damage: 1
   score: 10
   target: {fileID: 0}
