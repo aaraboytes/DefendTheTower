@@ -231,9 +231,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd5e9fe7ff3f14b4191dc87bf6874f56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  target: {fileID: 2122079241}
   speed: 6
-  maxDistance: -12.5
+  maxDistance: -11.82
 --- !u!65 &77959740
 BoxCollider:
   m_ObjectHideFlags: 0

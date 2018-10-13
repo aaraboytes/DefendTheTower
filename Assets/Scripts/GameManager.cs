@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour {
     public Text scoreText;
     public Text multiplierText;
 
+    public float time = 0;
+
     private void Awake()
     {
         if (_instance == null)
@@ -38,6 +40,8 @@ public class GameManager : MonoBehaviour {
         //Setup UI
         comboSlider.maxValue = maxSliderValues[0];
         comboSlider.value = 0;
+        //Restart time
+        time = 0;
     }
     private void Update()
     {
@@ -51,6 +55,11 @@ public class GameManager : MonoBehaviour {
         {
             Time.timeScale = 1;
             advicePanel.SetActive(false);
+        }
+        //Increase game time
+        if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "game")
+        {
+            time += Time.deltaTime;
         }
     }
     public void IncreseCombo()
@@ -138,5 +147,10 @@ public class GameManager : MonoBehaviour {
     {
         score -= cost;
         scoreText.text = score.ToString();
+    }
+    public void DestroyGameManager()
+    {
+        Debug.Log("Bye bye boy!");
+        Destroy(gameObject);
     }
 }
