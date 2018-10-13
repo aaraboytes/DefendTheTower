@@ -857,7 +857,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1381630173741680}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.5432541, y: 7.9235005, z: 36.372337}
+  m_LocalPosition: {x: 25.083862, y: 32.771927, z: -26.618593}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children:
   - {fileID: 4169694635924964}
@@ -1508,7 +1508,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!95 &95117451318066872
 Animator:
@@ -1540,8 +1540,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   life: 50
-  speed: 1
-  damage: 5
+  speed: 5
+  damage: 10
   score: 10
   target: {fileID: 0}
   indexTarget: 0
@@ -1555,9 +1555,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 10.3
-  m_Height: 61.4
+  m_Height: 50.17
   m_Direction: 1
-  m_Center: {x: 0, y: 29.22, z: 0}
+  m_Center: {x: 0, y: 24.3, z: 0}
 --- !u!137 &137789006503959492
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

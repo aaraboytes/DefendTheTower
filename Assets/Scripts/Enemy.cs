@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour {
     public int indexTarget;
     int currentLife;
     Rigidbody rb;
-
+    Vector3 move;
 	void Start () {
         currentLife = life;
         rb = GetComponent<Rigidbody>();
@@ -18,12 +18,15 @@ public class Enemy : MonoBehaviour {
 
     void Update() {
         //FollowTarget
-        Vector3 dir = target.position - transform.position;
-        Quaternion lookRot = Quaternion.LookRotation(dir);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 10.0f);
-        Vector3 move = transform.forward * speed;
+        Vector3 dir = target.position - transform.position; //Direction to go
+        Quaternion lookRot = Quaternion.LookRotation(dir);  //Direction to look
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, lookRot.eulerAngles.y, 0), Time.deltaTime * 10.0f);
+        //Move
+        float yStore = move.y;
+        move = transform.forward * speed;
+        move.y = yStore;
         rb.velocity = move;
-	}
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -50,11 +53,13 @@ public class Enemy : MonoBehaviour {
     }
     public void FindPath(int point)
     {
-        target = GameManager._instance.targets[point];
+        if(GameManager._instance.targets[point]!=null)
+            target = GameManager._instance.targets[point];
     }
     public void Die()
     {
         GameManager._instance.EnemyKilled(score);
+        LevelManager._instance.EnemyKilled();
         Destroy(gameObject);
     }
 }

@@ -370,7 +370,7 @@ GameObject:
   - component: {fileID: 114030786507807226}
   - component: {fileID: 65562546278826964}
   m_Layer: 9
-  m_Name: FastZombieCrawl
+  m_Name: SlowZombie
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -598,7 +598,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1852169188094164}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 19.535496, y: 24.354637, z: -31.077465}
+  m_LocalPosition: {x: 4.2342777, y: 20.81645, z: -36.558525}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children:
   - {fileID: 4012150915095422}
@@ -854,8 +854,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b64c4118ba0d3b64c8f7b60168d4eb3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  life: 10
-  speed: 8
+  life: 6
+  speed: 3
   damage: 5
   score: 5
   target: {fileID: 0}
@@ -875,7 +875,7 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: d60c6eb3e37ddd14caa4024a764e696a, type: 2}
+  - {fileID: 2100000, guid: 0a3b31b600195a14ab821d38425a65ce, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

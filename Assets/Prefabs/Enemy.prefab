@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 136415835228597342}
   - component: {fileID: 54770644884303826}
   - component: {fileID: 114864197707810548}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 4062273649803806}
   - component: {fileID: 33834146297815268}
   - component: {fileID: 23240096425048558}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sphere
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -186,7 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   life: 10
-  speed: 100
+  speed: 1
   damage: 1
   score: 10
   target: {fileID: 0}

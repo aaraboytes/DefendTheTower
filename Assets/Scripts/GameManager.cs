@@ -8,14 +8,12 @@ public class GameManager : MonoBehaviour {
     [Header("Game vars")]
     public int score = 0;
     public int aliveHumans = 5;
-    public int enemiesOnScene = 0;
-    public int maxEnemiesOnScene = 20;
     int maxMultiplier = 5;
     [SerializeField]
     int multiplier = 1;
     [Header("Game components")]
     public GameObject tower;
-    public GameObject shopPanel,advicePanel,pausePanel;
+    public GameObject shopPanel,advicePanel,pausePanel,gameOverPanel;
     public Transform[] targets;
     public Transform[] humanTargets;
     [Header("UI Components")]
@@ -43,7 +41,8 @@ public class GameManager : MonoBehaviour {
     }
     private void Update()
     {
-        if(!tower.activeInHierarchy)
+        //Check if the AR Card is focused
+        if(!tower.GetComponent<MeshRenderer>().enabled)
         {
             Time.timeScale = 0;
             advicePanel.SetActive(true);
@@ -90,7 +89,7 @@ public class GameManager : MonoBehaviour {
     }
     public void EnemyKilled(int score)
     {
-        enemiesOnScene--;
+        //Update score
         this.score += score * multiplier;
         scoreText.text = this.score.ToString();
     }
@@ -98,35 +97,41 @@ public class GameManager : MonoBehaviour {
     {
         aliveHumans--;
         hearts[aliveHumans].gameObject.SetActive(false);
+        if(aliveHumans == 0)
+        {
+            //Game over
+            gameOverPanel.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
     public Transform GetHumanTarget(Transform currentTarget = null)
     {
         Transform newTarget = null;
-        do
+        int i = 0;
+        int humanTargetLenght = GameManager._instance.humanTargets.Length;
+        for (i = 0; i < humanTargetLenght; i++)
         {
-            int i = 0;
-            int humanTargetLenght = GameManager._instance.humanTargets.Length;
-            for (i = 0; i < humanTargetLenght; i++)
-            {
-                if (currentTarget == GameManager._instance.humanTargets[i])
-                    break;
-            }
-            if (Random.Range(0, 1)<0.5f) {  //Avanzar
-                if(i == humanTargetLenght - 1)
-                    newTarget = GameManager._instance.humanTargets[0];
-                else
-                    newTarget = GameManager._instance.humanTargets[i + 1];
-            }
-            else//Retroceder
-            {
-                if (i == 0)
-                    newTarget = GameManager._instance.humanTargets[humanTargetLenght - 1];
-                else
-                    newTarget = GameManager._instance.humanTargets[i - 1];
-            }
-            
+            if (currentTarget == GameManager._instance.humanTargets[i])
+                break;
         }
-        while (currentTarget == newTarget);
+        float decision = Random.Range(0, 2);
+        Debug.Log("Decision : "+decision);
+        if (decision<0.5f) {  //Avanzar
+            if(i == humanTargetLenght - 1)
+                newTarget = GameManager._instance.humanTargets[i - 1];
+            else
+                newTarget = GameManager._instance.humanTargets[i + 1];
+        }
+        else//Retroceder
+        {
+            if (i == 0)
+                newTarget = GameManager._instance.humanTargets[i + 1];
+            else
+                newTarget = GameManager._instance.humanTargets[i - 1];
+        }
+        //Avoid target repetition with recursivity
+        if (currentTarget == newTarget)
+            newTarget = GetHumanTarget(currentTarget);
         return newTarget;
     }
     public void Buy(int cost)
