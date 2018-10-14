@@ -605,6 +605,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxScore: {fileID: 314972095}
   minTime: {fileID: 757571778}
+  playerName: {fileID: 0}
 --- !u!1 &728551620
 GameObject:
   m_ObjectHideFlags: 0
@@ -1032,7 +1033,7 @@ Prefab:
       objectReference: {fileID: 2100000, guid: 06438d145d3d0454494c9abf806a8cb2, type: 2}
     - target: {fileID: 100000, guid: cded0f714dda5dc4b92848d0903718c6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cded0f714dda5dc4b92848d0903718c6, type: 3}
