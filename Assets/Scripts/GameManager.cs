@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour {
             comboSlider.maxValue = maxSliderValues[multiplier - 1];
             comboSlider.value = 0;
             multiplier++;
-            multiplierText.text = "x" + multiplier.ToString();
+            multiplierText.text = "X" + multiplier.ToString();
         }
     }
     public void DecreaseCombo()

@@ -15,6 +15,7 @@ public class FPS : MonoBehaviour {
     public float vertSpeed;
     public float moveSpeed;
     public Text ammoText;
+    AudioSource audio;
 
     float timer;
     int currentAmmo;
@@ -28,6 +29,7 @@ public class FPS : MonoBehaviour {
         Cursor.lockState = CursorLockMode.Locked;
         currentAmmo = ammo;
         ammoText.text = currentAmmo.ToString() + "/" + ammo.ToString();
+        audio = GetComponent<AudioSource>();
     }
     private void Update()
     {
@@ -69,6 +71,7 @@ public class FPS : MonoBehaviour {
                 if (currentAmmo == 0)
                 {
                     currentAmmo = ammo; //Relleno
+                    audio.Play();
                     reloading = true;
                     ammoText.text = "Reloading";
                 }

@@ -85,7 +85,7 @@ public class Shop : MonoBehaviour {
         if (currentButton != 3)
         {
             currentButton = 3;
-            cost = timesUpgradeCadence * timesUpgradeCadence;
+            cost = costUpgradeCadence * timesUpgradeCadence;
             if(player.cadence -0.03f > 0)
                 costText.text = "Cost : " + cost.ToString();
             else
