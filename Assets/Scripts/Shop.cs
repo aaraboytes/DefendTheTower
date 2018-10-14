@@ -7,6 +7,8 @@ public class Shop : MonoBehaviour {
     public Text scoreText;
     public Text costText;
     public int costHealHumans, costUpgradeDamage, costUpgradeCadence;
+    public AudioClip buySound, denySound;
+    AudioSource audio;
 
     //Shop
     int timesHealHumans = 1, timesUpgradeDamage = 1, timesUpgradeCadence = 1;
@@ -23,6 +25,8 @@ public class Shop : MonoBehaviour {
         player = FindObjectOfType<FPS>();
         score = GameManager._instance.score;
         scoreText.text = "Score : "+ score.ToString();
+        audio = GetComponent<AudioSource>();
+        audio.volume = PlayerPrefs.GetFloat("volume", 1.0f);
     }
 
     public void HealHumans()
@@ -38,10 +42,12 @@ public class Shop : MonoBehaviour {
         else
         {
             //Confirm
+            PlaySound(CheckPrice(score, cost));
             if (CheckPrice(score, cost))
             {
                 NPC[] humansOnScene = new NPC[5];
                 humansOnScene = FindObjectsOfType<NPC>();
+                timesHealHumans++;
                 for (int i = 0; i < 5; i++)
                 {
                     if (humansOnScene[i] != null)
@@ -67,15 +73,28 @@ public class Shop : MonoBehaviour {
         else
         {
             //Confirm
+            
             if (CheckPrice(score, cost))
             {
-                player.damage++;
-                GameManager._instance.Buy(cost);
-                score = GameManager._instance.score;
-                scoreText.text = "Score : " + GameManager._instance.score.ToString();
+                if(timesUpgradeDamage!=limitUpgradeDamage)
+                {
+                    PlaySound(true);
+                    player.damage++;
+                    timesUpgradeDamage++;
+                    GameManager._instance.Buy(cost);
+                    score = GameManager._instance.score;
+                    scoreText.text = "Score : " + GameManager._instance.score.ToString();
+                }
+                else
+                {
+                    PlaySound(false);
+                    scoreText.text = "Max damage reached";
+                }
+                    
             }
             else
             {
+                PlaySound(false);
                 scoreText.text = "Score is not enough";
             }
         }
@@ -86,7 +105,7 @@ public class Shop : MonoBehaviour {
         {
             currentButton = 3;
             cost = costUpgradeCadence * timesUpgradeCadence;
-            if(player.cadence -0.03f > 0)
+            if(player.cadence -0.03f > 0 && timesUpgradeCadence!=limitUpgradeCadence)
                 costText.text = "Cost : " + cost.ToString();
             else
                 costText.text = "You have the minimun cadence";
@@ -98,20 +117,24 @@ public class Shop : MonoBehaviour {
             //Confirm
             if (CheckPrice(score, cost))
             {
-                if (player.cadence - 0.03f > 0)
+                if (player.cadence - 0.03f > 0 && timesUpgradeCadence!=limitUpgradeCadence)
                 {
-                    player.cadence -= 0.03f;
+                    PlaySound(true);
+                    timesUpgradeCadence++;
+                    player.cadence -= 0.015f;
                     GameManager._instance.Buy(cost);
                     score = GameManager._instance.score;
                     scoreText.text = "Score : " + GameManager._instance.score.ToString();
                 }
                 else
                 {
+                    PlaySound(false);
                     costText.text = "You have the minimun cadence";
                 }
             }
             else
             {
+                PlaySound(false);
                 scoreText.text = "Score is not enough";
             }
             
@@ -119,13 +142,22 @@ public class Shop : MonoBehaviour {
     }
     bool CheckPrice(int score,int cost)
     {
-        if (score > cost)
+        if (score >= cost)
             return true;
         return false;
     }
     public void CloseShop()
     {
+        currentButton = 0;
         Cursor.lockState = CursorLockMode.Locked;
         gameObject.SetActive(false);
+    }
+    void PlaySound(bool buyed)
+    {
+        if (buyed)
+            audio.clip = buySound;
+        else
+            audio.clip = denySound;
+        audio.Play();
     }
 }

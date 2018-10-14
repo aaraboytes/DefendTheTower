@@ -15,7 +15,9 @@ public class FPS : MonoBehaviour {
     public float vertSpeed;
     public float moveSpeed;
     public Text ammoText;
+    public Image[] bullets;
     AudioSource audio;
+    int layerMask = (1 << 9) | (1 << 10) | (1<<11);
 
     float timer;
     int currentAmmo;
@@ -40,7 +42,7 @@ public class FPS : MonoBehaviour {
             if (timer > cadence && !reloading)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(transform.position, transform.forward, out hit, distance))
+                if (Physics.Raycast(transform.position, transform.forward, out hit, distance,layerMask))
                 {
                     Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.blue);
                     if (hit.collider.CompareTag("Enemy"))
@@ -67,6 +69,7 @@ public class FPS : MonoBehaviour {
                 timer = 0;
                 currentAmmo--;
                 ammoText.text = currentAmmo.ToString() + "/" + ammo.ToString();
+                bullets[currentAmmo].gameObject.SetActive(false);
                 //Reload
                 if (currentAmmo == 0)
                 {
@@ -74,6 +77,8 @@ public class FPS : MonoBehaviour {
                     audio.Play();
                     reloading = true;
                     ammoText.text = "Reloading";
+                    for (int i = 0; i < bullets.Length; i++)
+                        bullets[i].gameObject.SetActive(true);
                 }
             }
         }

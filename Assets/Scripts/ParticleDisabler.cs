@@ -11,6 +11,7 @@ public class ParticleDisabler : MonoBehaviour
     {
         ps = GetComponent<ParticleSystem>();
         audio = GetComponent<AudioSource>();
+        audio.volume = PlayerPrefs.GetFloat("volume", 1.0f);
     }
     // Update is called once per frame
     void Update()

@@ -16,15 +16,48 @@ public class LevelManager : MonoBehaviour {
     int enemiesOnScene=0;       //Enemies alive in the current wave
     [SerializeField]
     int currentEnemies = 0;     //Enemies spawned in the current wave
+    public bool bridge = false;
+    float timer = 0;
 
     private void Awake()
     {
         _instance = this;
     }
+    private void Start()
+    {
+        bridge = false;
+    }
+    public void Update()
+    {
+        Debug.Log("Current enemies are " + currentEnemies + " compared with maxEnemies " + maxEnemiesPerWave[wave - 1]);
+        if (!SpawnMoreEnemies() && !bridge)
+        {
+            bridge = true;
+        }
+        if (bridge)
+        {
+            if (CheckNewWave())
+            {
+                timer += Time.deltaTime;
+                UpdateUITimer(bridgeTime - timer);
+                if (timer > bridgeTime)
+                {
+                    StartNewWave();
+                    timer = 0;
+                    bridge = false;
+                }
+            }
+            else
+                ShowWave();
+        }
+        else
+            ShowWave();
+        
+    }
     public bool CheckNewWave()
     {
         //Check if the current wave is over to start a bridge
-        if (currentEnemies == maxEnemiesPerWave[wave - 1] && enemiesOnScene == 0)
+        if (currentEnemies >= maxEnemiesPerWave[wave - 1] && enemiesOnScene == 0)
             return true;
         else
             return false;
@@ -54,8 +87,14 @@ public class LevelManager : MonoBehaviour {
         //Reset wave values
         currentEnemies = 0;
         enemiesOnScene = 0;
-        if(wave<10)
+        if (wave < 10)
             wave++;
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("win");
+            GameManager._instance.Win(); 
+        }
+            
     }
     public void UpdateUITimer(float time)
     {
@@ -64,5 +103,9 @@ public class LevelManager : MonoBehaviour {
     public void ShowWave()
     {
         timerText.text = "Wave " + wave.ToString();
+    }
+    public int getWave()
+    {
+        return wave;
     }
 }

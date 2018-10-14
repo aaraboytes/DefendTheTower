@@ -7,7 +7,6 @@ public class Spawner : MonoBehaviour {
     public int closestIndexPoint;
     [Header("Times")]
     public float startBridgeTime;
-    public float decrementTime;
     public float minTime;
     [Header("Objects")]
     public GameObject[] enemies;
@@ -15,45 +14,27 @@ public class Spawner : MonoBehaviour {
 
     float timer;
     int wave = 1;
-    bool bridge = false;
 
     void Update () {
         timer += Time.deltaTime;
-        //You can spawn more enemies
-        if (LevelManager._instance.SpawnMoreEnemies() && timer>startBridgeTime)
+        wave = LevelManager._instance.getWave();
+        //Debug.Log("Running " + timer + " and the startbridgetimeis "+startBridgeTime+" the bridge is " + LevelManager._instance.bridge);
+        if(timer>startBridgeTime)
         {
-            LevelManager._instance.ShowWave();
-            //Spawns a new enemy taking the wave value and setting probabilities, add first target too
-            SpawnEnemy();
-            //Notice to level manager
-            LevelManager._instance.IncrementEnemiesOnScene();
-            //Restart timer
-            timer = 0;
-            if (startBridgeTime > minTime)
+            Debug.Log("timer activated");
+            if (!LevelManager._instance.bridge)
+            {
+                Debug.Log("Spawning an enemy");
+                SpawnEnemy();
+                LevelManager._instance.IncrementEnemiesOnScene();
                 startBridgeTime = minTime;
-        }
-        //The enemies on the scene are the maximum of the current wave
-        else
-        {   
-            if (!bridge && LevelManager._instance.CheckNewWave())
-            {
-                //Finds the bridge time
-                startBridgeTime = LevelManager._instance.GetBridgeTime();
                 timer = 0;
-                bridge = true;
-            }
-            //bridge ended
-            if (timer>startBridgeTime && bridge)
-            {
-                bridge = false;
-                LevelManager._instance.StartNewWave();
-                wave++;
             }
         }
-        if (bridge)
-            LevelManager._instance.UpdateUITimer(startBridgeTime - timer);
-        else
-            LevelManager._instance.ShowWave();
+        if(LevelManager._instance.bridge)
+        {
+            startBridgeTime = LevelManager._instance.GetBridgeTime();
+        }
 	}
     void SpawnEnemy()
     {
@@ -78,11 +59,15 @@ public class Spawner : MonoBehaviour {
         }
         else if (wave < 7)
         {//Spawn normal, fast, tanks and climbers
-            if (prob < 40)
-                demonIndex = 0;
-            else if (prob < 80)
+            if (prob < 33)
                 demonIndex = 1;
-            else if (prob < 90)
+            else if (prob < 66)
+                demonIndex = 2;
+            else
+                demonIndex = 3;
+        }else if(wave <8)
+        {
+            if (prob < 50)
                 demonIndex = 2;
             else
                 demonIndex = 3;

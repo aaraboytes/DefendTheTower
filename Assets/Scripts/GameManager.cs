@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour {
     public Text multiplierText;
 
     public float time = 0;
+    bool win = false;
 
     private void Awake()
     {
@@ -40,6 +41,7 @@ public class GameManager : MonoBehaviour {
         //Setup UI
         comboSlider.maxValue = maxSliderValues[0];
         comboSlider.value = 0;
+        comboText.sprite = comboWords[0];
         //Restart time
         time = 0;
     }
@@ -61,6 +63,7 @@ public class GameManager : MonoBehaviour {
         {
             time += Time.deltaTime;
         }
+        comboText.sprite = comboWords[multiplier - 1];
     }
     public void IncreseCombo()
     {
@@ -78,6 +81,7 @@ public class GameManager : MonoBehaviour {
             multiplier++;
             multiplierText.text = "X" + multiplier.ToString();
         }
+        comboText.sprite = comboWords[multiplier - 1];
     }
     public void DecreaseCombo()
     {
@@ -90,7 +94,7 @@ public class GameManager : MonoBehaviour {
             if (comboSlider.value <= 0 && multiplier>1)
             {
                 multiplier--;
-                multiplierText.text = "x" + multiplier.ToString();
+                multiplierText.text = "X" + multiplier.ToString();
                 comboSlider.maxValue = maxSliderValues[multiplier];
                 comboSlider.value = comboSlider.maxValue - 1;
             }
@@ -152,5 +156,13 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Log("Bye bye boy!");
         Destroy(gameObject);
+    }
+    public void Win()
+    {
+        win = true;
+    }
+    public bool GetWin()
+    {
+        return win;
     }
 }
